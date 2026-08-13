@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Osama Market — Software Requirements Specification</title>
+<style>
+  :root{
+    --turquoise:#1ABC9C;
+    --turquoise-light:#5FD3C4;
+    --turquoise-dark:#128C7E;
+    --bg:#F5F7F7;
+    --white:#FFFFFF;
+    --text:#1F2D2B;
+    --muted:#5B6B69;
+    --danger:#E0554F;
+    --warn:#E5A445;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.65;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:40px 28px 80px;}
+  header.doc-header{
+    background:linear-gradient(135deg,var(--turquoise) 0%,var(--turquoise-dark) 100%);
+    color:var(--white);
+    padding:36px 32px;
+    border-radius:18px;
+    margin-bottom:32px;
+    box-shadow:0 8px 24px rgba(18,140,126,0.18);
+  }
+  header.doc-header h1{margin:0 0 6px;font-size:1.8rem;}
+  header.doc-header p{margin:2px 0;opacity:0.92;font-size:0.95rem;}
+  .badge{
+    display:inline-block;background:rgba(255,255,255,0.2);
+    padding:4px 12px;border-radius:999px;font-size:0.8rem;margin-top:10px;
+  }
+  h2{
+    color:var(--turquoise-dark);
+    border-bottom:2px solid var(--turquoise-light);
+    padding-bottom:8px;
+    margin-top:44px;
+    font-size:1.35rem;
+  }
+  h3{color:var(--text);margin-top:26px;font-size:1.08rem;}
+  .card{
+    background:var(--white);
+    border-radius:14px;
+    padding:22px 26px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom:18px;
+  }
+  table{width:100%;border-collapse:collapse;margin:14px 0;}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #E4EDEC;font-size:0.94rem;}
+  th{background:var(--turquoise);color:var(--white);font-weight:600;}
+  tr:nth-child(even){background:#FAFCFC;}
+  ul,ol{padding-left:22px;}
+  li{margin-bottom:6px;}
+  code{background:#EAF6F3;color:var(--turquoise-dark);padding:2px 6px;border-radius:6px;font-size:0.9em;}
+  .note{
+    background:#FFF6E9;
+    border-left:4px solid var(--warn);
+    padding:14px 18px;
+    border-radius:8px;
+    margin:16px 0;
+    font-size:0.94rem;
+  }
+  .tech-note{
+    background:#EAF6F3;
+    border-left:4px solid var(--turquoise);
+    padding:14px 18px;
+    border-radius:8px;
+    margin:16px 0;
+    font-size:0.94rem;
+  }
+  .checklist li::marker{color:var(--turquoise-dark);}
+  .toc{background:var(--white);border-radius:14px;padding:20px 26px;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+  .toc a{color:var(--turquoise-dark);text-decoration:none;}
+  .toc a:hover{text-decoration:underline;}
+  .toc ol{margin:0;}
+  .new-tag{
+    background:var(--turquoise);color:#fff;font-size:0.7rem;padding:2px 8px;
+    border-radius:999px;vertical-align:middle;margin-left:8px;
+  }
+  footer{margin-top:50px;text-align:center;color:var(--muted);font-size:0.85rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc-header">
+  <h1>Osama Market — Software Requirements Specification (SRS)</h1>
+  <p>Integrated Market Management System</p>
+  <p>Version 1.1 &nbsp;•&nbsp; August 12, 2026</p>
+  <span class="badge">Draft — for review before development starts</span>
+</header>
+
+<div class="toc">
+  <strong>Contents</strong>
+  <ol>
+    <li><a href="#sec1">Project Overview</a></li>
+    <li><a href="#sec2">Target Users</a></li>
+    <li><a href="#sec3">Design Requirements (UI/UX)</a></li>
+    <li><a href="#sec4">Functional Requirements</a></li>
+    <li><a href="#sec5">Technical Architecture &amp; Tools</a></li>
+    <li><a href="#sec6">Security Requirements</a></li>
+    <li><a href="#sec7">Non-Functional Requirements</a></li>
+    <li><a href="#sec8">Acceptance Criteria — Phase 1</a></li>
+    <li><a href="#sec9">Risks &amp; Notes</a></li>
+    <li><a href="#sec10">Next Steps</a></li>
+  </ol>
+</div>
+
+<h2 id="sec1">1. Project Overview</h2>
+<div class="card">
+<h3>1.1 Description</h3>
+<p>"Osama Market" is an integrated management system for a market/retail store, combining:</p>
+<ul>
+  <li>A <strong>Cashier (Point of Sale)</strong> system for daily sales transactions.</li>
+  <li>A <strong>financial &amp; analytics management</strong> system covering purchases, sales, debts, and inventory.</li>
+  <li>A <strong>simple, fast user interface</strong>, designed with a visual language inspired by Apple's Human Interface Guidelines: large clear icons, comfortable white space, and smooth transitions.</li>
+</ul>
+<p><strong>Important note:</strong> although this document and the source code comments/labels are written in English, <strong>the application's user-facing interface must remain fully in Arabic</strong> (all on-screen text, labels, buttons, and messages shown to the end user are Arabic, using the Readex Pro font). English here refers only to the documentation and internal code identifiers.</p>
+
+<h3>1.2 Goals</h3>
+<ol>
+  <li>Make daily store management easy without requiring technical expertise.</li>
+  <li>Provide a clear financial picture (profit/loss, debts, inventory) at any moment.</li>
+  <li>Work fully offline (offline-first) via a local database.</li>
+  <li>Be extensible later (desktop + Android apps) from the same codebase.</li>
+</ol>
+
+<h3>1.3 Scope (Phases)</h3>
+<table>
+  <tr><th>Phase</th><th>Description</th><th>Deliverable</th></tr>
+  <tr><td>Phase 1</td><td>Full-featured prototype in a single HTML file, with mock data</td><td>One working <code>index.html</code> file</td></tr>
+  <tr><td>Phase 2</td><td>Connect the UI to a local Realm database</td><td>App stores/retrieves real data locally</td></tr>
+  <tr><td>Phase 3</td><td>Package the app as a desktop app via Electron</td><td>Installers for Windows/macOS/Linux</td></tr>
+  <tr><td>Phase 4 (future)</td><td>Android version</td><td>App running on Android devices (see Section 5.4)</td></tr>
+</table>
+
+<div class="tech-note">
+<strong>Technical note:</strong> Electron builds <strong>desktop apps only</strong> (Windows/macOS/Linux) and has nothing to do with Android. To run the same interface on Android later, the practical option is <strong>Capacitor</strong> (wraps the same HTML/CSS/JS as a real Android app via WebView + native API access), using the <strong>Realm JS SDK</strong> compatible with both environments (Node/Electron and Android via Capacitor). Detailed in Section 5.4.
+</div>
+</div>
+
+<h2 id="sec2">2. Target Users</h2>
+<div class="card">
+<ul>
+  <li>The market owner and staff (cashier, inventory manager).</li>
+  <li>Users who may not have high technical expertise → priority on simplicity and clear icons.</li>
+</ul>
+</div>
+
+<h2 id="sec3">3. Design Requirements (UI/UX)</h2>
+<div class="card">
+<h3>3.1 Visual Identity</h3>
+<ul>
+  <li><strong>Color palette:</strong>
+    <ul>
+      <li>Primary: <strong>turquoise</strong> (suggested: <code>#1ABC9C</code>, with a lighter shade <code>#5FD3C4</code> for interactions, and a darker shade <code>#128C7E</code> for text/borders).</li>
+      <li>Secondary: <strong>white</strong> <code>#FFFFFF</code> and very light gray backgrounds <code>#F5F7F7</code> to reduce eye strain.</li>
+      <li>Semantic colors: green for success/profit, light red for debts/alerts, orange for warnings — kept within the same calm visual tone (not overly saturated).</li>
+    </ul>
+  </li>
+  <li><strong>Font:</strong> <strong>Readex Pro</strong> from Google Fonts (full Arabic support, weights 160–700) — used across the entire interface for text and numbers.</li>
+  <li><strong>Icons:</strong> large and clear, simple line/outline or soft-flat style, uniform sizing, resembling iOS icons in roundness and simplicity.</li>
+  <li><strong>Corners &amp; shadows:</strong> soft rounded corners (relatively large border-radius), very light shadows for subtle depth without visual clutter.</li>
+</ul>
+
+<h3>3.2 User Experience</h3>
+<ul>
+  <li><strong>Responsive design</strong> that works equally well on desktop and mobile screens.</li>
+  <li>Full <strong>RTL (right-to-left) support</strong> since the interface is entirely in Arabic.</li>
+  <li><strong>Smooth transitions/animations</strong> between screens (light fade/slide), short duration (200–300ms) so it never feels slow.</li>
+  <li>A home dashboard showing a quick summary: daily sales, profit, outstanding debts, inventory status.</li>
+  <li>Primary navigation via a <strong>side or bottom menu with large icons</strong> for each main section.</li>
+  <li>Support for both <strong>Light and Dark mode</strong> — optional (nice to have), not required in Phase 1.</li>
+</ul>
+
+<h3>3.3 Main Interface Sections</h3>
+<ol>
+  <li>Home / Dashboard</li>
+  <li>Cashier (Point of Sale)</li>
+  <li>Purchases</li>
+  <li>Sales</li>
+  <li>Debts (owed to the store / owed by the store)</li>
+  <li>Inventory</li>
+  <li>Reports &amp; Analytics</li>
+  <li>Settings</li>
+</ol>
+</div>
+
+<h2 id="sec4">4. Detailed Functional Requirements</h2>
+
+<div class="card">
+<h3>4.1 Cashier (POS) System</h3>
+<ul>
+  <li>Fast sale screen: search for a product (by name or barcode), add to cart, edit quantity, remove an item.</li>
+  <li>Automatic total calculation (with optional manual discount).</li>
+  <li>Payment methods: cash / debt (deferred) — automatically logged in the Debts section when "debt" is selected.</li>
+  <li>Completing a sale → automatically updates inventory (deducts sold quantity).</li>
+  <li>Display/print a simplified invoice for the transaction (later: actual printing or PDF support).</li>
+  <li>Keyboard shortcuts for frequent operations (to speed up cashier work).</li>
+
+  <h4 style="margin-top:18px;">4.1.1 Sale Return / Void Sale <span class="new-tag">NEW</span></h4>
+  <p>The cashier system must support reversing a completed sale, covering two distinct cases:</p>
+  <ul>
+    <li><strong>Void (cancel) a sale:</strong> cancels a sale made <em>within the same active session</em>, before the cashier moves to another transaction — typically used to correct an immediate mistake. Fully removes the transaction as if it never happened.</li>
+    <li><strong>Return (refund) a sale:</strong> reverses a sale that was already completed and closed (possibly on a previous day), whether as a full return or a <strong>partial return of specific items</strong> from the original invoice.</li>
+  </ul>
+  <p><strong>Functional rules:</strong></p>
+  <ul>
+    <li>Every return/void must reference an original sale record (searchable by invoice number, date, or customer).</li>
+    <li>Inventory must be automatically restored (quantity added back) for every returned/voided item.</li>
+    <li>If the original sale was paid in cash, the refunded amount is recorded as a cash outflow; if it was on debt, the corresponding debt balance must be reduced accordingly.</li>
+    <li>Partial returns must recalculate the remaining invoice total and update the sales record without deleting the original invoice history.</li>
+    <li>Every return/void operation must be <strong>logged in the audit log</strong> (see Section 6) with: user who performed it, date/time, reason (optional text field), and the affected items/amount.</li>
+    <li>A return/void action requires an explicit confirmation step (cannot be triggered accidentally).</li>
+    <li><strong>Permission restriction:</strong> depending on the role system (Section 6), voiding/returning a sale may require owner approval or a specific permission, since it directly affects inventory and cash records — this should be configurable in Settings (e.g., "cashier can void within X minutes of sale" vs "returns always require owner login").</li>
+    <li>The dashboard and reports must reflect returns/voids correctly (i.e., net sales = gross sales − returns), not just raw totals.</li>
+  </ul>
+</div>
+
+<div class="card">
+<h3>4.2 Purchases</h3>
+<ul>
+  <li>Record new purchase invoices (supplier, products, quantities, purchase price, date).</li>
+  <li>Automatic inventory link (quantity increases when a purchase invoice is recorded).</li>
+  <li>Full purchase history view with filtering (by date / by supplier).</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>4.3 Sales</h3>
+<ul>
+  <li>Full record of all sales generated from the cashier, including returned/voided ones (clearly marked).</li>
+  <li>Filtering by date (daily/weekly/monthly), by product, or by payment method.</li>
+  <li>Display of net sales and estimated profit (sell price − purchase price) per period, after accounting for returns.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>4.4 Debts</h3>
+<ul>
+  <li><strong>Debts owed by the store (to suppliers):</strong> resulting from purchases on credit.</li>
+  <li><strong>Debts owed to the store (by customers):</strong> resulting from sales on credit via the cashier.</li>
+  <li>Manual entry of a new debt (party name, amount, date, note).</li>
+  <li>Recording <strong>partial/full repayments</strong>, automatically updating the remaining balance.</li>
+  <li>Debt balances must automatically adjust when a related sale is returned or voided (see 4.1.1).</li>
+  <li>Visual alert (red/orange) for overdue or high-value debts.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>4.5 Inventory</h3>
+<ul>
+  <li>Full product list: name, category, current quantity, purchase price, sell price, low-stock threshold.</li>
+  <li>Automatic alert when a product approaches out-of-stock (Low Stock Alert).</li>
+  <li>Add/edit/delete a product, with barcode support (optional in Phase 1, standard later).</li>
+  <li>Product categorization into sections for easier browsing/search.</li>
+  <li>Inventory quantities automatically restored when a sale is returned/voided.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>4.6 Reports &amp; Analytics (Budget Dashboard)</h3>
+<ul>
+  <li>Comprehensive financial summary: total sales (net of returns), total purchases, net profit, total debts (owed to/by), current inventory value.</li>
+  <li>Simple charts for sales/profit over time (daily, weekly, monthly).</li>
+  <li>A dedicated view/filter for returns and voided sales, to track their frequency and value.</li>
+  <li>Report export (PDF or Excel) — required in a later phase, after the database is connected.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>4.7 Settings</h3>
+<ul>
+  <li>Store information (name, logo, currency used).</li>
+  <li>User/permission management (owner, cashier), including the return/void permission rule from 4.1.1.</li>
+  <li>Local database backup and restore.</li>
+  <li>Language switch (Arabic is the default and required app language; English optional later — see note in Section 1.1).</li>
+</ul>
+</div>
+
+<h2 id="sec5">5. Technical Architecture &amp; Tools</h2>
+
+<div class="card">
+<h3>5.1 Phase 1 — Prototype (Frontend Only)</h3>
+<ul>
+  <li><strong>Single file only:</strong> <code>index.html</code> containing HTML + CSS + JavaScript (no separate files at this stage, per client request).</li>
+  <li>Font: load <strong>Readex Pro</strong> from Google Fonts via <code>&lt;link&gt;</code> or <code>@import</code>.</li>
+  <li>Mock data stored in JavaScript variables to simulate all screens and features, including sample voided/returned sale records to demo the new feature.</li>
+  <li>Responsive design using CSS (Flexbox/Grid) without any heavy external framework at this stage.</li>
+</ul>
+
+<h3>5.2 Phase 2 — Local Database (Realm)</h3>
+<ul>
+  <li>Use <strong>Realm Database (Realm JS SDK)</strong> for persistent local storage.</li>
+  <li>Data schema design for each core entity:
+    <ul>
+      <li><code>Product</code>: id, name, category, purchasePrice, sellPrice, quantity, minQuantityAlert, barcode</li>
+      <li><code>Sale</code>: id, date, items[], total, paymentType (cash/debt), customerId?, status (completed/voided/returned), returnedItems[]</li>
+      <li><code>Purchase</code>: id, date, supplierName, items[], total</li>
+      <li><code>Debt</code>: id, type (customer/supplier), partyName, amount, remainingAmount, date, status</li>
+      <li><code>User</code>: id, username, passwordHash, role (owner/cashier)</li>
+      <li><code>AuditLog</code>: id, userId, action (sale/void/return/delete/...), timestamp, details</li>
+      <li><code>StoreSettings</code>: storeName, currency, logo</li>
+    </ul>
+  </li>
+  <li>All operations (sale, purchase, debt repayment, <strong>return/void</strong>) must update related entities within a <strong>single transaction</strong> to guarantee data consistency (e.g., a sale return restores inventory, adjusts the sale record, and adjusts the debt balance in one atomic operation).</li>
+</ul>
+
+<h3>5.3 Phase 3 — Desktop App (Electron)</h3>
+<ul>
+  <li>Package the interface using <strong>Electron</strong> to produce a Windows/macOS/Linux app.</li>
+  <li>Realm runs natively (native Node module) directly inside the Electron environment.</li>
+  <li>Support automatic app updates later (optional — Electron Auto Updater).</li>
+  <li>Generate installers via a tool such as <code>electron-builder</code>.</li>
+</ul>
+
+<h3>5.4 Phase 4 (Future) — Android Version</h3>
+<ul>
+  <li>Use <strong>Capacitor</strong> to package the same HTML/CSS/JS interface as a real Android app (not just a web page inside a permission-less WebView).</li>
+  <li>Use the Realm package compatible with React Native/Capacitor to keep the same data schema, with a <strong>sync or export/import</strong> mechanism between the desktop and Android versions if unified data across devices is required later.</li>
+</ul>
+</div>
+
+<h2 id="sec6">6. Security Requirements</h2>
+<div class="card">
+<p>Since the app manages sensitive financial data, security is mandatory, not optional:</p>
+<ol>
+  <li><strong>Mandatory login</strong> with a password, using password hashing (e.g., bcrypt) — never stored as plain text.</li>
+  <li><strong>Role-based permissions:</strong>
+    <ul>
+      <li><strong>Owner:</strong> full access to all sections, reports, and settings, including approving returns/voids when required.</li>
+      <li><strong>Cashier:</strong> access limited to the cashier screen and possibly inventory (view-only), without access to full financial reports or settings. Return/void access is governed by the configurable rule from Section 4.1.1.</li>
+    </ul>
+  </li>
+  <li><strong>Local database encryption</strong> (Realm supports built-in AES-256 encryption) to protect the local file if the device is lost or stolen.</li>
+  <li><strong>Periodic backup</strong> (automatic or manual) of the database with restore capability.</li>
+  <li><strong>Audit log</strong> recording who performed any sensitive operation (sale, delete product, edit debt, <strong>void/return sale</strong>) and when — to prevent internal manipulation.</li>
+  <li>Protection against accidental deletion: any delete operation (product, invoice, debt) requires explicit user confirmation, and the same applies to sale return/void actions.</li>
+</ol>
+</div>
+
+<h2 id="sec7">7. Non-Functional Requirements</h2>
+<div class="card">
+<table>
+  <tr><th>Requirement</th><th>Description</th></tr>
+  <tr><td>Performance</td><td>Instant UI response (under 100ms for interactions, under 500ms for any data query)</td></tr>
+  <tr><td>Offline operation</td><td>The app works fully offline after Phase 2 (no dependency on any external server)</td></tr>
+  <tr><td>Scalability</td><td>Flexible data structure allowing future features (multiple branches, additional users) without rebuilding the foundation</td></tr>
+  <tr><td>Compatibility</td><td>Works on Windows and macOS at minimum in the Electron phase</td></tr>
+  <tr><td>Maintainability</td><td>Organized, commented code when moving from a single HTML file to a multi-file project structure in Phase 2 and beyond</td></tr>
+</table>
+</div>
+
+<h2 id="sec8">8. Acceptance Criteria — Phase 1</h2>
+<div class="card">
+<ul class="checklist">
+  <li>✅ A single HTML file that runs directly by opening it in any modern browser, with no extra setup.</li>
+  <li>✅ All eight sections (Section 3.3) exist and are navigable with smooth transitions.</li>
+  <li>✅ Readex Pro is used across all text.</li>
+  <li>✅ Colors match the defined visual identity (turquoise/white/teal).</li>
+  <li>✅ The design is responsive (works equally well on desktop and mobile screen sizes).</li>
+  <li>✅ A complete sale flow from the cashier (select product → cart → complete sale) is testable with mock data.</li>
+  <li>✅ A complete <strong>sale return/void flow</strong> is testable with mock data: selecting a past sale, returning/voiding it (fully or partially), and seeing inventory, sales totals, and debt balances update accordingly.</li>
+  <li>✅ A main dashboard displays (mock, at this stage) figures for: sales, profit, debts, inventory.</li>
+  <li>✅ All user-facing text in the running app is in Arabic, despite this specification and code comments being in English.</li>
+</ul>
+</div>
+
+<h2 id="sec9">9. Risks &amp; Notes</h2>
+<div class="card">
+<div class="note">
+<strong>Moving from a "single file" to a multi-file structure:</strong> when reaching Phase 2 (Realm), it is not practically possible to remain in a single HTML file, since Realm requires a Node.js/Electron environment. At that point, an organized project structure will be agreed upon (folders: <code>main</code>, <code>renderer</code>, <code>database</code>, <code>assets</code>), while fully preserving the same design and visual identity.
+</div>
+<div class="note">
+<strong>Security vs. simplicity:</strong> the "easy and simple" feature must not weaken security requirements (login, permissions) — especially for sensitive actions like sale returns/voids. A simple but secure login flow will be designed (e.g., a large-icon login screen with a numeric PIN for the cashier, and a full password for the owner), with the return/void permission rule enforced regardless of how simple the login feels.
+</div>
+<div class="note">
+<strong>Android via Electron is not technically possible</strong> — the alternative (Capacitor) is outlined in Section 5.4, and this choice should be confirmed with the client before reaching that phase.
+</div>
+</div>
+
+<h2 id="sec10">10. Next Steps</h2>
+<div class="card">
+<ol>
+  <li>Review this document and approve it or request changes.</li>
+  <li>Begin building the <strong>Phase 1 <code>index.html</code></strong> file based on everything above, including the new return/void sale feature — while ensuring the running application's interface remains fully in Arabic.</li>
+</ol>
+</div>
+
+<footer>Osama Market — Software Requirements Specification · v1.1 · August 12, 2026</footer>
+</div>
+</body>
+</html>
